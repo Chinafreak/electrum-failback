@@ -1,7 +1,8 @@
 {
   "log": "/var/log/electrum.log",
-  "database": "/home/ethscryptdev/electrumDatabase",
-  "databaseBackup": "/home/ethscryptdev/backup/",
+  "database": "/home/ethscryptdev/electrumDatabase/",
+  "databaseBackupDirectory": "/home/ethscryptdev/",
+  "databaseBackupFile": "electrum.backup",
   "timeBackupMinute": 15,
   "electrumCommand": "electrum-desire-server"
 }

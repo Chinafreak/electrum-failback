@@ -5,7 +5,7 @@ Tail = require('tail').Tail;
 
 var stopBackup = false;
 
-mkdirp(settings.databaseBackup, (err) => {
+mkdirp(settings.databaseBackupDirectory, (err) => {
   if (err) console.error(err);
 
   tail = new Tail(settings.log);
@@ -46,12 +46,12 @@ mkdirp(settings.databaseBackup, (err) => {
 
 
 var backup = (callback) => {
-  if (!stopBackup) bu.backup(settings.database, settings.databaseBackup, (err) => {
+  if (!stopBackup) bu.backup(settings.database, settings.databaseBackupDirectory + settings.databaseBackupFile, (err) => {
     if (err) console.error("Backup failed: " + err);
     else console.log("Backup successful");
   });
 }
 
 var restore = () => {
-  bu.restore(settings.databaseBackup, settings.database, (err) => callback(err));
+  bu.restore(settings.databaseBackupDirectory + settings.databaseBackupFile, settings.database, (err) => callback(err));
 }
