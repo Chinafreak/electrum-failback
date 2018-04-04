@@ -40,7 +40,7 @@ mkdirp(settings.databaseBackupDirectory, (err) => {
   backup();
   setInterval(() => {
     backup();
-  }, timeBackupMinute * 1000 * 60)
+  }, settings.timeBackupMinute * 1000 * 60)
 
 });
 
