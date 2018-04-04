@@ -2,6 +2,9 @@ var settings = require("./settings.json");
 var mkdirp = require("mkdirp");
 var bu = require('backup');
 Tail = require('tail').Tail;
+const {
+  exec
+} = require('child_process');
 
 var stopBackup = false;
 
