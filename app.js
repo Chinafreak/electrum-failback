@@ -12,7 +12,7 @@ mkdirp(settings.databaseBackupDirectory, (err) => {
 
   tail.on("line", function (data) {
     console.log("LOG: " + data);
-    if (data.indexOf("Exception in") != 0) {
+    if (data.indexOf("Exception in") >= 0) {
       console.log("Error found in log, restarting electrum...");
       stopBackup = true;
       exec(settings.electrumCommand + " stop");
