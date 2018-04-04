@@ -23,6 +23,10 @@ mkdirp(settings.databaseBackupDirectory, (err) => {
         console.log("[FAILBACK] Removing Database....");
         exec("sudo rm -rf " + settings.database);
         setTimeout(() => {
+          console.log("[FAILBACK] electrum restarted....");
+          exec(settings.electrumCommand + " start");
+          stopBackup = false;
+          /*
           console.log("[FAILBACK] Restoring.....");
           restore((err) => {
             if (err) {
@@ -35,6 +39,7 @@ mkdirp(settings.databaseBackupDirectory, (err) => {
               }, 2000);
             }
           });
+          */
         }, 10000);
 
       }, 10000);
