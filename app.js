@@ -11,7 +11,9 @@ mkdirp(settings.databaseBackupDirectory, (err) => {
   tail = new Tail(settings.log);
 
   tail.on("line", function (data) {
+    console.log("LOG: " + data);
     if (data.indexOf("Exception in") != 0) {
+      console.log("Error found in log, restarting electrum...");
       stopBackup = true;
       exec(settings.electrumCommand + " stop");
       setTimeout(() => {
@@ -19,6 +21,7 @@ mkdirp(settings.databaseBackupDirectory, (err) => {
           if (err) {
             console.error("ERROR RESTORE: " + err)
           } else {
+            console.log("Restore successful");
             setTimeout(() => {
               exec(settings.electrumCommand + " start");
               setTimeout(() => {
