@@ -16,16 +16,28 @@ mkdirp(settings.databaseBackupDirectory, (err) => {
   tail.on("line", function (data) {
     console.log("LOG: " + data);
     if (data.indexOf("Exception in") >= 0 && !stopBackup) {
-      console.log("Error found in log, restarting electrum...");
+      console.log("[FAILBACK] Error found in log, restarting electrum...");
       stopBackup = true;
       exec(settings.electrumCommand + " stop");
       setTimeout(() => {
-        exec("rm -rf " + settings.electrumDatabase);
+        console.log("[FAILBACK] Removing Database....");
+        exec("sudo rm -rf " + settings.database);
         setTimeout(() => {
-          exec(settings.electrumCommand + " start");
-          stopBackup = false;
-        }, 2000);
-      }, 15000);
+          console.log("[FAILBACK] Restoring.....");
+          restore((err) => {
+            if (err) {
+              console.error("[FAILBACK] ERROR RESTORE: " + err)
+            } else {
+              console.log("[FAILBACK] Restore successful");
+              setTimeout(() => {
+                exec(settings.electrumCommand + " start");
+                stopBackup = false;
+              }, 2000);
+            }
+          });
+        }, 10000);
+
+      }, 10000);
     }
 
 
@@ -35,4 +47,21 @@ mkdirp(settings.databaseBackupDirectory, (err) => {
     console.error('ERROR: ', error);
   });
 
+  backup();
+  setInterval(() => {
+    backup();
+  }, settings.timeBackupMinute * 1000 * 60)
+
 });
+
+
+var backup = (callback) => {
+  if (!stopBackup) bu.backup(settings.database, settings.databaseBackupDirectory + settings.databaseBackupFile, (err) => {
+    if (err) console.error("Backup failed: " + err);
+    else console.log("Backup successful");
+  });
+}
+
+var restore = (callback) => {
+  bu.restore(settings.databaseBackupDirectory + settings.databaseBackupFile, settings.database, (err) => callback(err));
+}

@@ -1,6 +1,6 @@
 {
   "log": "/var/log/electrum.log",
-  "database": "/home/ethscryptdev/electrumDatabase/",
+  "database": "/home/ethscryptdev/electrumDatabase",
   "databaseBackupDirectory": "/home/ethscryptdev/",
   "databaseBackupFile": "electrum.backup",
   "timeBackupMinute": 15,
