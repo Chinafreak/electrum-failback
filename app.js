@@ -13,23 +13,24 @@ mkdirp(settings.databaseBackup, (err) => {
   tail.on("line", function (data) {
     if (data.indexOf("Exception in") != 0) {
       stopBackup = true;
+      exec(settings.electrumCommand + " stop");
+      setTimeout(() => {
+        restore((err) => {
+          if (err) {
+            console.error("ERROR RESTORE: " + err)
+          } else {
+            setTimeout(() => {
+              exec(settings.electrumCommand + " start");
+              setTimeout(() => {
+                stopBackup = false;
+              }, 5000);
+            }, 2000);
+          }
+        });
+      }, 10000);
     }
 
-    exec(settings.electrumCommand + " stop");
-    setTimeout(() => {
-      restore((err) => {
-        if (err) {
-          console.error("ERROR RESTORE: " + err)
-        } else {
-          setTimeout(() => {
-            exec(settings.electrumCommand + " start");
-            setTimeout(() => {
-              stopBackup = false;
-            }, 5000);
-          }, 2000);
-        }
-      });
-    }, 10000);
+
   });
 
   tail.on("error", function (error) {
