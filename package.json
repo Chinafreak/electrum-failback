@@ -1,0 +1,25 @@
+{
+  "name": "electrum-failback",
+  "version": "1.0.0",
+  "description": "if electrum fails, remove database and use backup.",
+  "main": "app.js",
+  "dependencies": {
+    "backup": "^1.1.0",
+    "mkdirp": "^0.5.1",
+    "tail": "^1.2.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chinafreak/electrum-failback.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Chinafreak/electrum-failback/issues"
+  },
+  "homepage": "https://github.com/Chinafreak/electrum-failback#readme"
+}
